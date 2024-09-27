@@ -4,19 +4,34 @@ steps:
     args: [
             'build',
             '-t',
-            'us-central1-docker.pkg.dev/pub-demo-cb-ar/python-repo/my-app:${SHORT_SHA}',
+            'us-central1-docker.pkg.dev/gcp-studies-436915/gcp-repo-test/zowyeapptest:${SHORT_SHA}',
             '-t',
-            'us-central1-docker.pkg.dev/pub-demo-cb-ar/python-repo/my-app:latest',
-            '--cache-from',
-            'us-central1-docker.pkg.dev/pub-demo-cb-ar/python-repo/my-app:latest',
+            'us-central1-docker.pkg.dev/gcp-studies-436915/gcp-repo-test/zowyeapptest:latest',
+            '--cache-from', # to use cache from previous builds if available
+            'us-central1-docker.pkg.dev/gcp-studies-436915/gcp-repo-test/zowyeapptest:latest',
             '.'
           ]
 
   # Docker push to Google Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push',  'us-central1-docker.pkg.dev/pub-demo-cb-ar/python-repo/my-app:${SHORT_SHA}']
+    args: ['push', 'us-central1-docker.pkg.dev/gcp-studies-436915/gcp-repo-test/zowyeapptest:${SHORT_SHA}']
+
+  # Deploy to Cloud Run
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: [
+            'run',
+            'deploy',
+            'my-cloud-run-service', 
+            '--image',
+            'us-central1-docker.pkg.dev/gcp-studies-436915/gcp-repo-test/zowyeapptest:${SHORT_SHA}', 
+            '--platform',
+            'managed',
+            '--region',
+            'us-central1',
+            '--allow-unauthenticated' # to allow public access
+          ]
 
 # Store images in Google Artifact Registry 
 images:
-  - us-central1-docker.pkg.dev/pub-demo-cb-ar/python-repo/my-app:${SHORT_SHA}
-  - us-central1-docker.pkg.dev/pub-demo-cb-ar/python-repo/my-app:latest
+  - us-central1-docker.pkg.dev/gcp-studies-436915/gcp-repo-test/zowyeapptest:${SHORT_SHA}
+  - us-central1-docker.pkg.dev/gcp-studies-436915/gcp-repo-test/zowyeapptest:latest
