@@ -28,8 +28,8 @@ steps:
             'managed',
             '--region',
             'us-central1',
-            '--allow-unauthenticated'
-            '--set-env-vars', 'someVar=MyValue'
+            '--allow-unauthenticated',
+            '--set-env-vars', 'someVar=zharah'
           ]
 
 # Log Options
