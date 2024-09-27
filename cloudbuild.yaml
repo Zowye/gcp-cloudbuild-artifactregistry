@@ -7,7 +7,7 @@ steps:
             'us-central1-docker.pkg.dev/gcp-studies-436915/gcp-repo-test/zowyeapptest:${SHORT_SHA}',
             '-t',
             'us-central1-docker.pkg.dev/gcp-studies-436915/gcp-repo-test/zowyeapptest:latest',
-            '--cache-from', # to use cache from previous builds if available
+            '--cache-from',
             'us-central1-docker.pkg.dev/gcp-studies-436915/gcp-repo-test/zowyeapptest:latest',
             '.'
           ]
@@ -21,15 +21,19 @@ steps:
     args: [
             'run',
             'deploy',
-            'my-cloud-run-service', 
+            'my-cloud-run-service',
             '--image',
-            'us-central1-docker.pkg.dev/gcp-studies-436915/gcp-repo-test/zowyeapptest:${SHORT_SHA}', 
+            'us-central1-docker.pkg.dev/gcp-studies-436915/gcp-repo-test/zowyeapptest:${SHORT_SHA}',
             '--platform',
             'managed',
             '--region',
             'us-central1',
-            '--allow-unauthenticated' # to allow public access
+            '--allow-unauthenticated'
           ]
+
+# Log Options
+options:
+  logging: CLOUD_LOGGING_ONLY
 
 # Store images in Google Artifact Registry 
 images:
